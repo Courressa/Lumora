@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumora</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Lumora</h1>
+        <h2 id="location-country"></h2>
+    </header>
+    <main>
+        <section id="location-selection">
+            <button id="current-location">Current Location</button>
+            <button id="search-location">Search Location</button>
+            <form id="search-form">
+                <input
+                    name="Search"
+                    type="text"
+                    id="location-input"
+                    placeholder="Enter location (city)"
+                />
+                <div id="suggestions" class="suggestions-dropdown"></div>
+                
+            </form>
+        </section>
+        <section id="weather-info">
+            <h2 id="location-name"></h2>
+            <nav id="weather-tabs">
+                <button class="tab-button active" data-tab="current-weather-card">Current</button>
+                <button class="tab-button" data-tab="hourly-weather-card">Hourly</button>
+                <button class="tab-button" data-tab="daily-weather-card">Daily</button>
+            </nav>
+
+            <section id="current-weather-card" class="weather-section">
+                <div id="current-weather-emoji"></div>
+                <div id="current-temperature"></div>
+                <div id="current-feels-like"></div>
+                <div id="current-weather-description"></div>
+
+                <section id="current-weather-details">
+                    <div id="current-humidity"></div>
+                    <div id="current-cloud-cover"></div>
+                    <div id="current-wind-speed"></div>
+                    <div id="current-wind-direction"></div>
+                </section>
+            </section>
+            <section id="hourly-weather-card" class="weather-section"></section>
+            <section id="daily-weather-card" class="weather-section"></section>
+        </section>
+    </main>
+    <footer>
+
+    </footer>
+    <script type="module" src="./js/script.js"></script>
+</body>
+</html>
