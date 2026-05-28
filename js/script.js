@@ -60,6 +60,7 @@ const getCurrentLocation = () => {
 const resetCurrentLocationButton = () => {
     currentLocationButton.textContent = 'Current Location';
     currentLocationButton.disabled = false;
+    locationInput.value = '';
 };
 
 
@@ -164,7 +165,7 @@ const getWeatherData = async (latitude, longitude) => {
         if (response.ok) {
             const jsonResponse = await response.json();
             console.log('Weather data:', jsonResponse);
-            displayCurrentWeather(jsonResponse.current, jsonResponse.current_units);
+            displayWeather(jsonResponse.current, jsonResponse.current_units, jsonResponse.daily, jsonResponse.daily_units);
         }
 
     } catch (error) {
@@ -176,12 +177,35 @@ const getWeatherData = async (latitude, longitude) => {
 
 /* === Display Weather Data === */
 const weatherContainer = document.getElementById('weather-info');
-const currentWeatherElement = document.getElementById('current-weather-card');
-const hourlyWeatherElement = document.getElementById('hourly-weather-card');
-const dailyWeatherElement = document.getElementById('daily-weather-card');
+const currentWeatherElement = document.getElementById('current');
+const hourlyWeatherElement = document.getElementById('hourly');
+const dailyWeatherElement = document.getElementById('daily');
+const tabButtons = document.querySelectorAll('.tab-button');
+const weatherSections = document.querySelectorAll('.weather-section');
 
 
-const displayCurrentWeather = (currentWeather, weatherUnits) => {
+// Tab navigation
+tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const targetTab = button.dataset.tab;
+
+        // Remove active from all buttons
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+
+        // Add active to clicked button
+        button.classList.add('active');
+
+        // Hide all sections
+        weatherSections.forEach(section => section.classList.remove('active'));
+
+        // Show target section
+        document.getElementById(targetTab).classList.add('active');
+    });
+});
+
+
+const displayWeather = (currentWeather, weatherUnits, dailyWeather, dailyUnits) => {
+    //Current Weather
     currentWeatherElement.querySelector('#current-weather-emoji').textContent = weatherCodeToEmoji[currentWeather.weather_code] || '❓';
     currentWeatherElement.querySelector('#current-temperature').textContent = `${currentWeather.temperature_2m} ${weatherUnits.temperature_2m}`;
     currentWeatherElement.querySelector('#current-feels-like').textContent = `Feels like ${currentWeather.apparent_temperature} ${weatherUnits.apparent_temperature}`;
@@ -191,4 +215,39 @@ const displayCurrentWeather = (currentWeather, weatherUnits) => {
     currentWeatherElement.querySelector('#current-wind-speed').textContent = `Wind Speed: ${currentWeather.wind_speed_10m} ${weatherUnits.wind_speed_10m}`;
     currentWeatherElement.querySelector('#current-wind-direction').textContent = `Wind Direction: ${currentWeather.wind_direction_10m}${weatherUnits.wind_direction_10m}`;
     
+    // Switch to current weather tab after loading data
+    document.querySelector('[data-tab="current"]').click();
+
+    //Hourly Weather
+
+    //Daily Weather
+    for (let i = 0; i < dailyWeather.temperature_2m_max.length; i++) {
+        const today = new Date();
+        const dailyDate = new Date(dailyWeather.time[i]);
+        let day;
+
+        const isSameDay = (
+            today.getFullYear() === dailyDate.getFullYear() &&
+            today.getMonth() === dailyDate.getMonth() && // zero-based month
+            today.getDate() === dailyDate.getDate()
+        );
+
+        if (isSameDay) {
+            day = 'Today';
+        } else if (dailyDate.getTime() < today.getTime()) {
+            day = 'Yesterday';
+        } else {
+            const options = { weekday: 'long' };
+            day = dailyDate.toLocaleDateString(undefined, options);
+        }
+
+        const dailyElement = document.createElement('div');
+        dailyElement.innerHTML = `
+            <h3>${day}</h3>
+            <div>${weatherCodeToEmoji[dailyWeather.weather_code[i]] || '❓'} ${weatherCodeToDescription[dailyWeather.weather_code[i]] || 'Unknown'}</div>
+             ⬆️ ${dailyWeather.temperature_2m_max[i]}${dailyUnits.temperature_2m_max} || ⬇️ ${dailyWeather.temperature_2m_min[i]}${dailyUnits.temperature_2m_min}
+        `;
+        dailyWeatherElement.appendChild(dailyElement);
+    }
+
 };

@@ -26,15 +26,16 @@
                 
             </form>
         </section>
-        <section id="weather-info">
-            <h2 id="location-name"></h2>
-            <nav id="weather-tabs">
-                <button class="tab-button active" data-tab="current-weather-card">Current</button>
-                <button class="tab-button" data-tab="hourly-weather-card">Hourly</button>
-                <button class="tab-button" data-tab="daily-weather-card">Daily</button>
-            </nav>
 
-            <section id="current-weather-card" class="weather-section">
+        <h2 id="location-name"></h2>
+        <div class="weather-tabs">
+            <button class="tab-button" data-tab="current">Current</button>
+            <button class="tab-button" data-tab="hourly">Hourly</button>
+            <button class="tab-button" data-tab="daily">Daily</button>
+        </div>
+
+        <section id="weather-info">
+            <section id="current" class="weather-section">
                 <div id="current-weather-emoji"></div>
                 <div id="current-temperature"></div>
                 <div id="current-feels-like"></div>
@@ -47,8 +48,8 @@
                     <div id="current-wind-direction"></div>
                 </section>
             </section>
-            <section id="hourly-weather-card" class="weather-section"></section>
-            <section id="daily-weather-card" class="weather-section"></section>
+            <section id="hourly" class="weather-section"></section>
+            <section id="daily" class="weather-section"></section>
         </section>
     </main>
     <footer>
