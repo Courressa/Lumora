@@ -30,13 +30,62 @@ main {
     align-items: center;
 }
 
+/* === Location Selection === */
 #location-selection {
     margin-bottom: 2rem;
+}
+
+#location-selection button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: #4a929c;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+#location-selection button:disabled {
+    background: #6e6e6e;
+    color: rgb(255, 255, 255);
+    cursor: default;
 }
 
 #search-form {
     display: none;
 }
+
+/* === Weather Tabs === */
+
+.weather-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.tab-button {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+    border-radius: 6px;
+    margin: 1rem 0;
+}
+
+.tab-button.active {
+    background: #007bff;
+    color: white;
+}
+
+.weather-section {
+    display: none;
+    width: 100%;
+}
+
+.weather-section.active {
+    display: block;
+}
+
+/* === Weather Display === */
 
 #weather-info {
     text-align: center;
