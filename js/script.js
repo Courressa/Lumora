@@ -3,6 +3,8 @@ import { weatherCodeToDescription, weatherCodeToEmoji } from './weatherObjects.j
 const locationInput = document.getElementById('location-input');
 const suggestionsContainer = document.getElementById('suggestions');
 const locationNameElement = document.getElementById('location-name');
+const weatherTabs= document.querySelectorAll('.weather-tabs');
+const locationSelected = document.getElementById('location-selected');
 const locationCountryElement = document.getElementById('location-country');
 const currentLocationButton = document.getElementById('current-location');
 const searchLocationButton = document.getElementById('search-location');
@@ -110,6 +112,18 @@ document.addEventListener('click', (event) => {
         suggestionsContainer.style.display = 'none';
     }
 });
+
+// Hide Current, Hourly and Daily if location (current or selected) has not been selected
+const hideWeatherTabs = () => {
+    weatherTabs.forEach(section => {
+        console.log(section);
+        section.style.display = 'none';
+    });
+};
+
+if (!locationNameElement.textContent) {
+    hideWeatherTabs();
+};
 
 const showSuggestions = (suggestions) => {
     suggestionsContainer.innerHTML = '';
