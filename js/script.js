@@ -3,7 +3,7 @@ import { weatherCodeToDescription, weatherCodeToEmoji } from './weatherObjects.j
 const locationInput = document.getElementById('location-input');
 const suggestionsContainer = document.getElementById('suggestions');
 const locationNameElement = document.getElementById('location-name');
-const weatherTabs= document.querySelectorAll('.weather-tabs');
+const weatherTabsContainer = document.getElementById('weather-tabs');
 const locationSelected = document.getElementById('location-selected');
 const locationCountryElement = document.getElementById('location-country');
 const currentLocationButton = document.getElementById('current-location');
@@ -115,10 +115,7 @@ document.addEventListener('click', (event) => {
 
 // Hide Current, Hourly and Daily if location (current or selected) has not been selected
 const hideWeatherTabs = () => {
-    weatherTabs.forEach(section => {
-        console.log(section);
-        section.style.display = 'none';
-    });
+    weatherTabsContainer.style.display = 'none';
 };
 
 if (!locationNameElement.textContent) {
@@ -180,7 +177,7 @@ const getWeatherData = async (latitude, longitude) => {
         if (response.ok) {
             const jsonResponse = await response.json();
             console.log('Weather data:', jsonResponse);
-            displayWeather(jsonResponse.current, jsonResponse.current_units, jsonResponse.daily, jsonResponse.daily_units);
+            displayWeather(jsonResponse.current, jsonResponse.current_units, jsonResponse.daily, jsonResponse.daily_units, jsonResponse.hourly, jsonResponse.hourly_units);
         }
 
     } catch (error) {
@@ -219,14 +216,12 @@ tabButtons.forEach(button => {
 });
 
 const showWeatherTabs = () => {
-    weatherTabs.forEach(section => {
-        section.style.display = 'block';
-    });
+    weatherTabsContainer.style.display = 'block';
 };
 
-const displayWeather = (currentWeather, weatherUnits, dailyWeather, dailyUnits) => {
+const displayWeather = (currentWeather, weatherUnits, dailyWeather, dailyUnits, hourlyWeather, hourlyUnits) => {
     showWeatherTabs();
-    //Current Weather
+    //-- Current Weather --//
     currentWeatherElement.querySelector('#current-weather-emoji').textContent = weatherCodeToEmoji[currentWeather.weather_code] || '❓';
     currentWeatherElement.querySelector('#current-temperature').textContent = `${currentWeather.temperature_2m} ${weatherUnits.temperature_2m}`;
     currentWeatherElement.querySelector('#current-feels-like').textContent = `Feels like ${currentWeather.apparent_temperature} ${weatherUnits.apparent_temperature}`;
@@ -239,9 +234,28 @@ const displayWeather = (currentWeather, weatherUnits, dailyWeather, dailyUnits) 
     // Switch to current weather tab after loading data
     document.querySelector('[data-tab="current"]').click();
 
-    //Hourly Weather
+    //-- Hourly Weather --//
+    const currentHour = new Date().getHours();
 
-    //Daily Weather
+    for (let i = currentHour; i < (currentHour + 24); i++) {
+        const hourDate = new Date(hourlyWeather.time[i]);
+
+        let timeLabel = (i === 0) ? "Now" : 
+                        hourDate.toLocaleTimeString([], { 
+                            hour: 'numeric', 
+                            hour12: true 
+                        });
+
+        const hourlyElement = document.createElement('div');
+        hourlyElement.innerHTML = `
+            <h3>${timeLabel}</h3>
+            <div>${weatherCodeToEmoji[hourlyWeather.weather_code[i]] || '❓'} ${weatherCodeToDescription[hourlyWeather.weather_code[i]] || 'Unknown'}</div>
+            <p>Temperature: ${hourlyWeather.temperature_2m[i]}${hourlyUnits.temperature_2m}</p>
+        `;
+        hourlyWeatherElement.appendChild(hourlyElement);
+    };
+
+    //-- Daily Weather --//
     for (let i = 0; i < dailyWeather.temperature_2m_max.length; i++) {
         const today = new Date();
         const dailyDate = new Date(dailyWeather.time[i]);
