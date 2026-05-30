@@ -1,4 +1,5 @@
-import { weatherCodeToDescription, weatherCodeToEmoji } from './weatherObjects.js';
+import { getWeatherData } from './api.js';
+import { getLocationSuggestions } from './api.js';
 
 const locationInput = document.getElementById('location-input');
 const suggestionsContainer = document.getElementById('suggestions');
@@ -79,31 +80,7 @@ const resetSearchInputVisibility = () => {
 
 locationInput.addEventListener('input', async (event) => {
     event.preventDefault();
-    const urlToFetch = `https://geocoding-api.open-meteo.com/v1/search?name=`;
-    const location = locationInput.value.trim();
-
-    if (location.length < 3) {
-        suggestionsContainer.innerHTML = '';
-        return;
-    }
-    
-    //Search for location using geocoding API
-    try {
-        const response = await fetch (`${urlToFetch}${location}`);
-
-        if (response.ok) {
-            const jsonResponse = await response.json();
-            if (jsonResponse.results && jsonResponse.results.length > 0) {
-                const locationData = jsonResponse.results;
-
-                showSuggestions(locationData);
-            }
-        }
-
-    } catch (error) {
-        console.error('Error fetching geocoding data:', error);
-        alert('An error occurred while searching for the location. Please try again later.');
-    }
+    getLocationSuggestions(locationInput.value);
 });
 
 // Hide suggestions when clicking outside the input or suggestions container
@@ -122,7 +99,7 @@ if (!locationNameElement.textContent) {
     hideWeatherTabs();
 };
 
-const showSuggestions = (suggestions) => {
+export const showSuggestions = (suggestions) => {
     suggestionsContainer.innerHTML = '';
     const checkedLocations = new Set();
 
@@ -155,134 +132,10 @@ const selectLocation = (location) => {
 
     // Fetch weather data for the selected location
     getWeatherData(location.latitude, location.longitude);
+    
     // Update location name and country display
     locationNameElement.textContent = `${location.name}, ${location.admin1}`;
     locationCountryElement.textContent = `(${location.country})`;
 };
 
 
-/* === API Calls === */
-const baseUrl = 'https://api.open-meteo.com/v1/';
-
-const getWeatherData = async (latitude, longitude) => {
-    const forcastEndpoint = `forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto`;
-    const currentWeatherEndpoint = '&current=temperature_2m,is_day,apparent_temperature,weather_code,relative_humidity_2m,wind_speed_10m,wind_direction_10m,cloud_cover';
-    const hourlyEndpoint = '&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,precipitation,rain,showers,snowfall,snow_depth,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,visibility';
-    const dailyEndpoint = '&daily=temperature_2m_max,temperature_2m_min,weather_code,rain_sum,showers_sum,snowfall_sum,precipitation_sum,precipitation_probability_max,precipitation_hours,sunrise,sunset,wind_speed_10m_max,wind_direction_10m_dominant';
-    const urlToFetch = `${baseUrl}${forcastEndpoint}${currentWeatherEndpoint}${hourlyEndpoint}${dailyEndpoint}`;
-
-    try {
-        const response = await fetch(urlToFetch);
-
-        if (response.ok) {
-            const jsonResponse = await response.json();
-            console.log('Weather data:', jsonResponse);
-            displayWeather(jsonResponse.current, jsonResponse.current_units, jsonResponse.daily, jsonResponse.daily_units, jsonResponse.hourly, jsonResponse.hourly_units);
-        }
-
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
-        alert('An error occurred while fetching weather data. Please try again later.');
-    }
-};
-
-
-/* === Display Weather Data === */
-const weatherContainer = document.getElementById('weather-info');
-const currentWeatherElement = document.getElementById('current');
-const hourlyWeatherElement = document.getElementById('hourly');
-const dailyWeatherElement = document.getElementById('daily');
-const tabButtons = document.querySelectorAll('.tab-button');
-const weatherSections = document.querySelectorAll('.weather-section');
-
-
-// Tab navigation
-tabButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const targetTab = button.dataset.tab;
-
-        // Remove active from all buttons
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-
-        // Add active to clicked button
-        button.classList.add('active');
-
-        // Hide all sections
-        weatherSections.forEach(section => section.classList.remove('active'));
-
-        // Show target section
-        document.getElementById(targetTab).classList.add('active');
-    });
-});
-
-const showWeatherTabs = () => {
-    weatherTabsContainer.style.display = 'block';
-};
-
-const displayWeather = (currentWeather, weatherUnits, dailyWeather, dailyUnits, hourlyWeather, hourlyUnits) => {
-    showWeatherTabs();
-    //-- Current Weather --//
-    currentWeatherElement.querySelector('#current-weather-emoji').textContent = weatherCodeToEmoji[currentWeather.weather_code] || '❓';
-    currentWeatherElement.querySelector('#current-temperature').textContent = `${currentWeather.temperature_2m} ${weatherUnits.temperature_2m}`;
-    currentWeatherElement.querySelector('#current-feels-like').textContent = `Feels like ${currentWeather.apparent_temperature} ${weatherUnits.apparent_temperature}`;
-    currentWeatherElement.querySelector('#current-weather-description').textContent = weatherCodeToDescription[currentWeather.weather_code] || 'Unknown weather condition';
-    currentWeatherElement.querySelector('#current-humidity').textContent = `Humidity: ${currentWeather.relative_humidity_2m}${weatherUnits.relative_humidity_2m}`;
-    currentWeatherElement.querySelector('#current-cloud-cover').textContent = `Cloud Cover: ${currentWeather.cloud_cover}${weatherUnits.cloud_cover}`;
-    currentWeatherElement.querySelector('#current-wind-speed').textContent = `Wind Speed: ${currentWeather.wind_speed_10m} ${weatherUnits.wind_speed_10m}`;
-    currentWeatherElement.querySelector('#current-wind-direction').textContent = `Wind Direction: ${currentWeather.wind_direction_10m}${weatherUnits.wind_direction_10m}`;
-    
-    // Switch to current weather tab after loading data
-    document.querySelector('[data-tab="current"]').click();
-
-    //-- Hourly Weather --//
-    const currentHour = new Date().getHours();
-
-    for (let i = currentHour; i < (currentHour + 24); i++) {
-        const hourDate = new Date(hourlyWeather.time[i]);
-
-        let timeLabel = (i === 0) ? "Now" : 
-                        hourDate.toLocaleTimeString([], { 
-                            hour: 'numeric', 
-                            hour12: true 
-                        });
-
-        const hourlyElement = document.createElement('div');
-        hourlyElement.innerHTML = `
-            <h3>${timeLabel}</h3>
-            <div>${weatherCodeToEmoji[hourlyWeather.weather_code[i]] || '❓'} ${weatherCodeToDescription[hourlyWeather.weather_code[i]] || 'Unknown'}</div>
-            <p>Temperature: ${hourlyWeather.temperature_2m[i]}${hourlyUnits.temperature_2m}</p>
-        `;
-        hourlyWeatherElement.appendChild(hourlyElement);
-    };
-
-    //-- Daily Weather --//
-    for (let i = 0; i < dailyWeather.temperature_2m_max.length; i++) {
-        const today = new Date();
-        const dailyDate = new Date(dailyWeather.time[i]);
-        let day;
-
-        const isSameDay = (
-            today.getFullYear() === dailyDate.getFullYear() &&
-            today.getMonth() === dailyDate.getMonth() && // zero-based month
-            today.getDate() === dailyDate.getDate()
-        );
-
-        if (isSameDay) {
-            day = 'Today';
-        } else if (dailyDate.getTime() < today.getTime()) {
-            day = 'Yesterday';
-        } else {
-            const options = { weekday: 'long' };
-            day = dailyDate.toLocaleDateString(undefined, options);
-        }
-
-        const dailyElement = document.createElement('div');
-        dailyElement.innerHTML = `
-            <h3>${day}</h3>
-            <div>${weatherCodeToEmoji[dailyWeather.weather_code[i]] || '❓'} ${weatherCodeToDescription[dailyWeather.weather_code[i]] || 'Unknown'}</div>
-             ⬆️ ${dailyWeather.temperature_2m_max[i]}${dailyUnits.temperature_2m_max} || ⬇️ ${dailyWeather.temperature_2m_min[i]}${dailyUnits.temperature_2m_min}
-        `;
-        dailyWeatherElement.appendChild(dailyElement);
-    }
-
-};
