@@ -27,7 +27,7 @@ tabButtons.forEach(button => {
 });
 
 const showWeatherTabs = () => {
-    weatherTabsContainer.style.display = 'block';
+    weatherTabsContainer.style.display = 'flex';
 };
 
 

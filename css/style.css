@@ -18,20 +18,28 @@ body {
 
 header {
     background-color: rgba(17, 147, 180, 0.425);
-    padding: 1rem;
+    padding: 0.5rem;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 h1 {
     font-family: 'Mea Culpa', 'Lucida Handwriting', cursive;
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: #685500;
+}
+
+h2 {
+    color: #886f00;
 }
 
 main {
     flex: 1;
-    padding: 2rem;
+    padding: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,53 +47,71 @@ main {
 
 button {
     font-family: 'Elsie Swash Caps', sans-serif;
-    font-weight: 600;
+    font-size: 1.25rem;
+    background: #2f676e;
+    color: rgb(255, 255, 255);
 }
 
 /* === Location Selection === */
 #location-selection {
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #location-selection button {
     padding: 0.75rem 1.5rem;
     border: none;
-    background: #4a929c;
-    color: rgb(255, 255, 255);
+    
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 0.5rem;
 }
 
 #location-selection button:disabled {
-    background: #6e6e6e;
+    background: #597173;
     color: rgb(255, 255, 255);
     cursor: default;
+}
+
+.location-buttons {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 #search-form {
     display: none;
 }
+#search-form input {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    min-width: 20rem;
+    width: 100%;
+}
+
 
 /* === Weather Tabs === */
 
-.weather-tabs {
-    display: flex;
+#weather-tabs {
     gap: 1rem;
     margin-bottom: 0.5rem;
+    align-items: center;
+    margin: 1rem;
 }
 
 .tab-button {
     padding: 0.5rem 1.5rem;
     border: none;
-    background: #eee;
     cursor: pointer;
-    border-radius: 6px;
-    margin: 1rem 0;
+    border-radius: 0.5rem;
 }
 
 .tab-button.active {
-    background: #007bff;
-    color: white;
+    background: #597173;
+    color: rgb(255, 255, 255);
 }
 
 .weather-section {
@@ -100,6 +126,9 @@ button {
 /* === Weather Display === */
 
 #weather-info {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
     text-align: center;
     font-size: 1.25rem;
     width: 100%;
@@ -108,7 +137,7 @@ button {
 
 .weather-section {
     padding: 2rem;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px;
 }
