@@ -119,10 +119,6 @@ button {
     width: 100%;
 }
 
-.weather-section.active {
-    display: block;
-}
-
 /* === Weather Display === */
 
 #weather-info {
@@ -135,17 +131,15 @@ button {
 }
 
 
-.weather-section {
+.weather-section.active {
+    display: block;
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    width: 100%;
+    min-width: 600px;
+    width: auto;
     height: auto;
-}
-
-#current-weather div {
-    margin-bottom: 1rem;
 }
 
 /* Current */
@@ -176,7 +170,6 @@ button {
 
 /* Hourly */
 #hourly {
-    display: flex;
     justify-content: flex-start;
     flex-wrap: nowrap;
     gap: 1rem;

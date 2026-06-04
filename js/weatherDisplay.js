@@ -18,11 +18,22 @@ tabButtons.forEach(button => {
         // Add active to clicked button
         button.classList.add('active');
 
+
         // Hide all sections
         weatherSections.forEach(section => section.classList.remove('active'));
 
         // Show target section
         document.getElementById(targetTab).classList.add('active');
+        if (targetTab === 'current') {
+            hourlyWeatherElement.style.display = 'none';
+            dailyWeatherElement.style.display = 'none';
+        } else if (targetTab === 'hourly') {
+            hourlyWeatherElement.style.display = 'flex';
+            dailyWeatherElement.style.display = 'none';
+        } else if (targetTab === 'daily') {
+            hourlyWeatherElement.style.display = 'none';
+            dailyWeatherElement.style.display = 'flex';
+        }
     });
 });
 
