@@ -86,27 +86,26 @@ const dailyWeather = (weather, units) => {
 
     for (let i = 0; i < weather.temperature_2m_max.length; i++) {
         const today = new Date();
-        const dailyDate = new Date(weather.time[i]);
+        today.setHours(0, 0, 0, 0); // Normalize to midnight for accurate comparison
+        const dailyDate = new Date(weather.time[i] + "T12:00:00"); // Use noon to avoid timezone issues
         let day;
-
-        const isSameDay = (
-            today.getFullYear() === dailyDate.getFullYear() &&
-            today.getMonth() === dailyDate.getMonth() && // zero-based month
-            today.getDate() === dailyDate.getDate()
-        );
-
-        if (isSameDay) {
+        
+        if (dailyDate.toDateString() === today.toDateString()) {
             day = 'Today';
-        } else if (dailyDate.getTime() < today.getTime()) {
-            day = 'Yesterday';
         } else {
-            const options = { weekday: 'long' };
-            day = dailyDate.toLocaleDateString(undefined, options);
+            day = dailyDate.toLocaleDateString([], { weekday: 'long' });
         }
+
+        // Show short date as well (e.g. "Jun 4")
+        const shortDate = dailyDate.toLocaleDateString([], { 
+            month: 'short', 
+            day: 'numeric' 
+        });
 
         const dailyElement = document.createElement('div');
         dailyElement.innerHTML = `
             <h3>${day}</h3>
+            <p>${shortDate}</p>
             <div>${weatherCodeToEmoji[weather.weather_code[i]] || '❓'} ${weatherCodeToDescription[weather.weather_code[i]] || 'Unknown'}</div>
              ⬆️ ${weather.temperature_2m_max[i]}${units.temperature_2m_max} || ⬇️ ${weather.temperature_2m_min[i]}${units.temperature_2m_min}
         `;
