@@ -138,7 +138,7 @@ button {
 .weather-section {
     padding: 2rem;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
     max-width: 600px;
 }
 
@@ -146,3 +146,33 @@ button {
 #current-weather div {
     margin-bottom: 1rem;
 }
+
+/* Current */
+#current-weather-emoji {
+    font-size: 3rem;
+}
+
+#current-temperature {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#current-feels-like {
+    font-size: 1.25rem;
+    color: #494949;
+}
+
+#current-weather-description {
+    font-size: 1.5rem;
+    font-style: italic;
+    
+}
+
+#current-weather-details {
+    font-size: 1.1rem;
+    padding: 1.3rem 0;
+}
+
+/* Hourly */
+
+/* Daily */
