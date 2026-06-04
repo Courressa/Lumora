@@ -143,6 +143,11 @@ button {
 }
 
 /* Current */
+#current > div {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 1rem;
+    border-radius: 0.75rem;
+}
 #current-weather-emoji {
     font-size: 3rem;
 }
