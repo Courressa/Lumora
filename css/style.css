@@ -142,6 +142,17 @@ button {
     height: auto;
 }
 
+.centered {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.35rem;
+}
+
+.feels-like {
+    font-size: 1.1rem;
+    color: #494949;
+}
+
 /* Current */
 #current > div {
     background: rgba(255, 255, 255, 0.85);
@@ -203,5 +214,3 @@ button {
 #hourly > div div, #daily > div div {
     margin: 0.5rem 0;
 }
-
-/* Daily */

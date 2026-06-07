@@ -73,9 +73,15 @@ const hourlyWeather = (weather, units) => {
 
         const hourlyElement = document.createElement('div');
         hourlyElement.innerHTML = `
-            <h3>${timeLabel}</h3>
-            <div>${weatherCodeToEmoji[weather.weather_code[i]] || '❓'} ${weatherCodeToDescription[weather.weather_code[i]] || 'Unknown'}</div>
-            <p>Temperature: ${weather.temperature_2m[i]}${units.temperature_2m}</p>
+            <div class="centered">
+                <h3>${timeLabel}</h3>
+                <div>${weatherCodeToEmoji[weather.weather_code[i]] || '❓'} ${weatherCodeToDescription[weather.weather_code[i]] || 'Unknown'}</div>
+                <p>${weather.temperature_2m[i]}${units.temperature_2m}</p>
+                <p class="feels-like">Feels like ${weather.apparent_temperature[i]}${units.apparent_temperature}</p>
+            </div>
+            
+            <p>Precipitation Probability: ${weather.precipitation_probability[i]}${units.precipitation_probability}</p>
+            
         `;
         hourlyWeatherElement.appendChild(hourlyElement);
     };
