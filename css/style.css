@@ -85,11 +85,38 @@ button {
 }
 #search-form input {
     font-size: 1rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
     min-width: 20rem;
     width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* -- Suggestions Dropdown -- */
+#suggestions {
+    padding: 0.5rem;
+    height: 9rem;
+    width: 100%;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background: #bee6ff72;
+    border-radius: 0rem 0rem 0.5rem 0.5rem;
+    scrollbar-color: #2f676e transparent;
+    margin-top: -0.3rem;
+    z-index: 0;
+}
+
+.suggestion-item {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+}
+
+.suggestion-item:hover {
+    background: #2f676e;
+    color: rgb(255, 255, 255);
 }
 
 
