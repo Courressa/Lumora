@@ -97,7 +97,7 @@ button {
 /* -- Suggestions Dropdown -- */
 #suggestions {
     padding: 0.5rem;
-    height: 9rem;
+    max-height: 9rem;
     width: 100%;
     overflow-y: auto;
     border: 1px solid #ccc;
@@ -108,7 +108,7 @@ button {
     z-index: 0;
 }
 
-.suggestion-item {
+.suggestion-item, .no-results {
     padding: 0.5rem;
     cursor: pointer;
     border-radius: 0.5rem;

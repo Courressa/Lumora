@@ -15,7 +15,7 @@ export const getLocationSuggestions = async (input) => {
     
     //Search for location using geocoding API
     try {
-        const response = await fetch (`${urlToFetch}${location}`);
+        const response = await fetch (`${urlToFetch}${encodeURIComponent(location)}&count=100`);
 
         if (response.ok) {
             const jsonResponse = await response.json();
@@ -23,6 +23,9 @@ export const getLocationSuggestions = async (input) => {
                 const locationData = jsonResponse.results;
 
                 showSuggestions(locationData);
+            } else {
+                suggestionsContainer.innerHTML = '<div class="no-results">No results found</div>';
+                suggestionsContainer.style.display = 'block';
             }
         }
 
