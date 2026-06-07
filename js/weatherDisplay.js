@@ -49,7 +49,7 @@ const currentWeather = (weather, units) => {
     currentWeatherElement.querySelector('#current-weather-description').textContent = weatherCodeToDescription[weather.weather_code] || 'Unknown weather condition';
     currentWeatherElement.querySelector('#current-humidity').textContent = `💧 Humidity: ${weather.relative_humidity_2m}${units.relative_humidity_2m}`;
     currentWeatherElement.querySelector('#current-cloud-cover').textContent = `☁️ Cloud Cover: ${weather.cloud_cover}${units.cloud_cover}`;
-    currentWeatherElement.querySelector('#current-wind').textContent = `💨 Wind: ${weather.wind_speed_10m} ${units.wind_speed_10m} ${weather.wind_direction_10m}${units.wind_direction_10m}`;
+    currentWeatherElement.querySelector('#current-wind').textContent = `💨 Wind: ${weather.wind_speed_10m}${units.wind_speed_10m} ${weather.wind_direction_10m}${units.wind_direction_10m}`;
 
     // Switch to current weather tab after loading data
     document.querySelector('[data-tab="current"]').click();
