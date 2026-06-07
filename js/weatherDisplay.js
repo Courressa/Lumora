@@ -78,7 +78,7 @@ const hourlyWeather = (weather, units) => {
                 <div>${weatherCodeToEmoji[weather.weather_code[i]] || '❓'} ${weatherCodeToDescription[weather.weather_code[i]] || 'Unknown'}</div>
                 <p>${weather.temperature_2m[i]}${units.temperature_2m}</p>
                 <p class="feels-like">Feels like ${weather.apparent_temperature[i]}${units.apparent_temperature}</p>
-                <p>☔ ${weather.precipitation_probability[i]}${units.precipitation_probability}</p>
+                <p>☔ ${weather.precipitation_probability[i]}${units.precipitation_probability} chance</p>
             </div>
         `;
         hourlyWeatherElement.appendChild(hourlyElement);
@@ -121,7 +121,7 @@ const dailyWeather = (weather, units) => {
                 </div>
             
                 <div class="daily-additional">
-                    <p>☔ ${weather.precipitation_probability_max[i]}${units.precipitation_probability_max}</p>
+                    <p>☔ ${weather.precipitation_probability_max[i]}${units.precipitation_probability_max} chance</p>
                     <p>Total: ${weather.precipitation_sum[i]}${units.precipitation_sum}</p>
                     <p>Wind Speed: ${weather.wind_speed_10m_max[i]}${units.wind_speed_10m_max}</p>
                     <p class="sun-times">
