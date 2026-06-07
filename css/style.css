@@ -190,11 +190,11 @@ button {
 #current-weather-description {
     font-size: 1.5rem;
     font-style: italic;
-    
+    padding-bottom: 1rem;
 }
 
 #current-weather-details {
-    font-size: 1.1rem;
+    font-size: 1.35rem;
     padding: 1.3rem 0;
 }
 
