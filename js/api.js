@@ -36,7 +36,7 @@ export const getWeatherData = async (latitude, longitude) => {
     const forcastEndpoint = `forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto`;
     const currentWeatherEndpoint = '&current=temperature_2m,is_day,apparent_temperature,weather_code,relative_humidity_2m,wind_speed_10m,wind_direction_10m,cloud_cover';
     const hourlyEndpoint = '&hourly=temperature_2m,apparent_temperature,precipitation_probability,weather_code';
-    const dailyEndpoint = '&daily=temperature_2m_max,temperature_2m_min,weather_code,rain_sum,showers_sum,snowfall_sum,precipitation_sum,precipitation_probability_max,precipitation_hours,sunrise,sunset,wind_speed_10m_max,wind_direction_10m_dominant';
+    const dailyEndpoint = '&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_sum,precipitation_probability_max,sunrise,sunset,wind_speed_10m_max';
     const urlToFetch = `${baseUrl}${forcastEndpoint}${currentWeatherEndpoint}${hourlyEndpoint}${dailyEndpoint}`;
 
     try {

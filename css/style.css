@@ -214,3 +214,16 @@ button {
 #hourly > div div, #daily > div div {
     margin: 0.5rem 0;
 }
+
+.max-temp {
+    color: #d9534f;
+}
+
+.min-temp {
+    color: #53adc8;
+}
+
+.daily-major {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+}

@@ -110,10 +110,37 @@ const dailyWeather = (weather, units) => {
 
         const dailyElement = document.createElement('div');
         dailyElement.innerHTML = `
-            <h3>${day}</h3>
-            <p>${shortDate}</p>
-            <div>${weatherCodeToEmoji[weather.weather_code[i]] || '❓'} ${weatherCodeToDescription[weather.weather_code[i]] || 'Unknown'}</div>
-             ⬆️ ${weather.temperature_2m_max[i]}${units.temperature_2m_max} || ⬇️ ${weather.temperature_2m_min[i]}${units.temperature_2m_min}
+            <div class="centered">
+                <div class="daily-major">
+                    <h3>${day}</h3>
+                    <p>${shortDate}</p>
+                    <div>${weatherCodeToEmoji[weather.weather_code[i]] || '❓'} ${weatherCodeToDescription[weather.weather_code[i]] || 'Unknown'}</div>
+                    <div class="temperature-range">
+                            <i class="fa-solid fa-angles-up max-temp"></i> ${weather.temperature_2m_max[i]}${units.temperature_2m_max} 
+                            &nbsp;&nbsp;&nbsp;
+                            <i class="fa-solid fa-angles-down min-temp"></i> ${weather.temperature_2m_min[i]}${units.temperature_2m_min}
+                    </div>
+                </div>
+            
+                <div class="daily-additional">
+                    <p>☔ ${weather.precipitation_probability_max[i]}${units.precipitation_probability_max}</p>
+                    <p>Total: ${weather.precipitation_sum[i]}${units.precipitation_sum}</p>
+                    <p>Wind Speed: ${weather.wind_speed_10m_max[i]}${units.wind_speed_10m_max}</p>
+                    <p class="sun-times">
+                        🌅 ${new Date(weather.sunrise[i]).toLocaleTimeString([], { 
+                            hour: 'numeric', 
+                            minute: '2-digit', 
+                            hour12: true 
+                        })}
+                        &nbsp;&nbsp;&nbsp;
+                        🌇 ${new Date(weather.sunset[i]).toLocaleTimeString([], { 
+                            hour: 'numeric', 
+                            minute: '2-digit', 
+                            hour12: true 
+                        })}
+                    </p>
+                </div>
+            </div>
         `;
         dailyWeatherElement.appendChild(dailyElement);
     }
