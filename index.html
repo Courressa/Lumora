@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumora</title>
+    <script src="https://kit.fontawesome.com/40c404fce8.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Elsie+Swash+Caps:wght@400;900&family=Mea+Culpa&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -13,8 +17,10 @@
     </header>
     <main>
         <section id="location-selection">
-            <button id="current-location">Current Location</button>
-            <button id="search-location">Search Location</button>
+            <div class="location-buttons">
+                <button id="current-location">Current Location</button>
+                <button id="search-location">Search Location</button>
+            </div>
             <form id="search-form">
                 <input
                     name="Search"
@@ -28,7 +34,7 @@
         </section>
 
         <h2 id="location-name"></h2>
-        <div class="weather-tabs">
+        <div id="weather-tabs">
             <button class="tab-button" data-tab="current">Current</button>
             <button class="tab-button" data-tab="hourly">Hourly</button>
             <button class="tab-button" data-tab="daily">Daily</button>
@@ -36,17 +42,18 @@
 
         <section id="weather-info">
             <section id="current" class="weather-section">
-                <div id="current-weather-emoji"></div>
-                <div id="current-temperature"></div>
-                <div id="current-feels-like"></div>
-                <div id="current-weather-description"></div>
+                <div>
+                    <div id="current-weather-emoji"></div>
+                    <div id="current-temperature"></div>
+                    <div id="current-feels-like"></div>
+                    <div id="current-weather-description"></div>
 
-                <section id="current-weather-details">
-                    <div id="current-humidity"></div>
-                    <div id="current-cloud-cover"></div>
-                    <div id="current-wind-speed"></div>
-                    <div id="current-wind-direction"></div>
-                </section>
+                    <section id="current-weather-details">
+                        <div id="current-humidity"></div>
+                        <div id="current-cloud-cover"></div>
+                        <div id="current-wind"></div>
+                    </section>
+                </div>
             </section>
             <section id="hourly" class="weather-section"></section>
             <section id="daily" class="weather-section"></section>
