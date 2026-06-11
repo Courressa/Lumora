@@ -136,7 +136,7 @@ button {
     border-radius: 0.5rem;
 }
 
-.tab-button.active {
+.tab-button.active, .unit-button.active {
     background: #597173;
     color: rgb(255, 255, 255);
 }
