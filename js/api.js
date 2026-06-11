@@ -38,7 +38,6 @@ export const getLocationSuggestions = async (input) => {
 
 export const getWeatherData = async (latitude, longitude) => {
     const unitParams = `&${new URLSearchParams(getUnitParams())}`;
-    console.log('Unit parameters:', unitParams.toString());
     const forcastEndpoint = `forecast?latitude=${latitude}&longitude=${longitude}&timezone=auto`;
     const currentWeatherEndpoint = '&current=temperature_2m,is_day,apparent_temperature,weather_code,relative_humidity_2m,wind_speed_10m,wind_direction_10m,cloud_cover';
     const hourlyEndpoint = '&hourly=temperature_2m,apparent_temperature,precipitation_probability,weather_code';
@@ -50,7 +49,6 @@ export const getWeatherData = async (latitude, longitude) => {
 
         if (response.ok) {
             const jsonResponse = await response.json();
-            console.log('Weather data:', jsonResponse);
             displayWeather(jsonResponse.current, jsonResponse.current_units, jsonResponse.daily, jsonResponse.daily_units, jsonResponse.hourly, jsonResponse.hourly_units);
         }
 
