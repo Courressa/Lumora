@@ -45,7 +45,7 @@ const refreshWeather = () => {
     if (refreshWeatherCallback) refreshWeatherCallback();
 };
 
-export const initUnitToggles = () => {
+export const initUnitToggle = () => {
     // Get DOM elements
     celsiusBtn = document.getElementById('celsius');
     fahrenheitBtn = document.getElementById('fahrenheit');

@@ -34,6 +34,7 @@ const getCurrentLocation = () => {
             await getWeatherData(latitude, longitude);
 
             locationNameElement.textContent = 'Current Location';
+            updateWeatherTabsVisibility();
             resetCurrentLocationButton();
 
             //Save last location so unit change can refresh weather for the same location
@@ -94,14 +95,14 @@ document.addEventListener('click', (event) => {
     }
 });
 
-// Hide Current, Hourly and Daily if location (current or selected) has not been selected
-const hideWeatherTabs = () => {
-    weatherTabsContainer.style.display = 'none';
+// Hide/Show Current, Hourly and Daily if location (current or selected) has not been selected
+export const updateWeatherTabsVisibility = () => {
+    const hasLocation = locationNameElement.textContent.trim() !== '';
+    weatherTabsContainer.style.display = hasLocation ? 'flex' : 'none';
+    console.log('Updating weather tabs visibility. Has location:', hasLocation);
 };
 
-if (!locationNameElement.textContent) {
-    hideWeatherTabs();
-};
+updateWeatherTabsVisibility();
 
 export const showSuggestions = (suggestions) => {
     suggestionsContainer.innerHTML = '';
@@ -140,6 +141,8 @@ const selectLocation = (location) => {
     // Update location name and country display
     locationNameElement.textContent = `${location.name}, ${location.admin1}`;
     locationCountryElement.textContent = `(${location.country})`;
+
+    updateWeatherTabsVisibility();
 
     //Save last location so unit change can refresh weather for the same location
     localStorage.setItem('lastLatitude', latitude);
