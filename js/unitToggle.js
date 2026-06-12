@@ -1,60 +1,24 @@
-const celsiusBtn = document.getElementById('celsius');
-const fahrenheitBtn = document.getElementById('fahrenheit');
-const kmhBtn = document.getElementById('kmh');
-const mphBtn = document.getElementById('mph');
-const metricBtn = document.getElementById('metric');
-const imperialBtn = document.getElementById('imperial');
-
-const defaultUnits = {
+let currentUnits = {
     temperature: 'celsius',
     windSpeed: 'kmh',
-    precipitation: 'metric'
+    precipitation: 'mm'
 };
 
-let currentUnits = { ...defaultUnits };
+let refreshWeatherCallback = null;
+let celsiusBtn, fahrenheitBtn, kmhBtn, mphBtn, metricBtn, imperialBtn;
 
-const handleTemperatureToggle = (unit) => {
-    if (unit === 'celsius') {
-        celsiusBtn.classList.add('active');
-        fahrenheitBtn.classList.remove('active');
-        currentUnits.temperature = 'celsius';
-    } else if (unit === 'fahrenheit') {
-        fahrenheitBtn.classList.add('active');
-        celsiusBtn.classList.remove('active');
-        currentUnits.temperature = 'fahrenheit';
+// Load from localStorage
+const loadSavedUnits = () => {
+    const saved = localStorage.getItem('lumoraUnits');
+    if (saved) {
+        currentUnits = { ...currentUnits, ...JSON.parse(saved) };
     }
 };
 
-const handleWindSpeedToggle = (unit) => {
-    if (unit === 'kmh') {
-        kmhBtn.classList.add('active');
-        mphBtn.classList.remove('active');
-        currentUnits.windSpeed = 'kmh';
-    } else if (unit === 'mph') {
-        mphBtn.classList.add('active');
-        kmhBtn.classList.remove('active');
-        currentUnits.windSpeed = 'mph';
-    }
+// Save to localStorage
+const saveUnits = () => {
+    localStorage.setItem('lumoraUnits', JSON.stringify(currentUnits));
 };
-
-const handlePrecipitationToggle = (unit) => {
-    if (unit === 'metric') {
-        metricBtn.classList.add('active');
-        imperialBtn.classList.remove('active');
-        currentUnits.precipitation = 'mm';
-    } else if (unit === 'imperial') {
-        imperialBtn.classList.add('active');
-        metricBtn.classList.remove('active');
-        currentUnits.precipitation = 'inch';
-    }
-};
-
-celsiusBtn.addEventListener('click', () => handleTemperatureToggle('celsius'));
-fahrenheitBtn.addEventListener('click', () => handleTemperatureToggle('fahrenheit'));
-kmhBtn.addEventListener('click', () => handleWindSpeedToggle('kmh'));
-mphBtn.addEventListener('click', () => handleWindSpeedToggle('mph'));
-metricBtn.addEventListener('click', () => handlePrecipitationToggle('metric'));
-imperialBtn.addEventListener('click', () => handlePrecipitationToggle('imperial'));
 
 export const getUnitParams = () => {
     return {
@@ -63,3 +27,87 @@ export const getUnitParams = () => {
         precipitation_unit: currentUnits.precipitation
     };
 };
+
+export const getCurrentUnits = () => ({ ...currentUnits });
+
+const updateButtonStates = () => {
+    celsiusBtn.classList.toggle('active', currentUnits.temperature === 'celsius');
+    fahrenheitBtn.classList.toggle('active', currentUnits.temperature === 'fahrenheit');
+    
+    kmhBtn.classList.toggle('active', currentUnits.windSpeed === 'kmh');
+    mphBtn.classList.toggle('active', currentUnits.windSpeed === 'mph');
+    
+    metricBtn.classList.toggle('active', currentUnits.precipitation === 'mm');
+    imperialBtn.classList.toggle('active', currentUnits.precipitation === 'inch');
+};
+
+const refreshWeather = () => {
+    if (refreshWeatherCallback) refreshWeatherCallback();
+};
+
+export const initUnitToggles = () => {
+    // Get DOM elements
+    celsiusBtn = document.getElementById('celsius');
+    fahrenheitBtn = document.getElementById('fahrenheit');
+    kmhBtn = document.getElementById('kmh');
+    mphBtn = document.getElementById('mph');
+    metricBtn = document.getElementById('metric');
+    imperialBtn = document.getElementById('imperial');
+
+    if (!celsiusBtn) return; // Safety check to ensure elements exist before proceeding
+
+    loadSavedUnits();
+
+    // Set active states
+    updateButtonStates();
+
+    // Temperature event listeners
+    celsiusBtn.addEventListener('click', () => {
+        currentUnits.temperature = 'celsius';
+        updateButtonStates();
+        saveUnits();
+        refreshWeather();
+    });
+
+    fahrenheitBtn.addEventListener('click', () => {
+        currentUnits.temperature = 'fahrenheit';
+        updateButtonStates();
+        saveUnits();
+        refreshWeather();
+    });
+
+    // Wind speed event listeners
+    kmhBtn.addEventListener('click', () => {
+        currentUnits.windSpeed = 'kmh';
+        updateButtonStates();
+        saveUnits();
+        refreshWeather();
+    });
+
+    mphBtn.addEventListener('click', () => {
+        currentUnits.windSpeed = 'mph';
+        updateButtonStates();
+        saveUnits();
+        refreshWeather();
+    });
+
+    // Precipitation event listeners
+    metricBtn.addEventListener('click', () => {
+        currentUnits.precipitation = 'mm';
+        updateButtonStates();
+        saveUnits();
+        refreshWeather();
+    });
+
+    imperialBtn.addEventListener('click', () => {
+        currentUnits.precipitation = 'inch';
+        updateButtonStates();
+        saveUnits();
+        refreshWeather();
+    });
+};
+
+export const onUnitChange = (callback) => {
+    refreshWeatherCallback = callback;
+};
+

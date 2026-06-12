@@ -1,5 +1,5 @@
-import { getWeatherData } from './api.js';
-import { getLocationSuggestions } from './api.js';
+import { getWeatherData, getLocationSuggestions } from './api.js';
+import { initUnitToggle, onUnitChange } from './unitToggle.js';
 
 const locationInput = document.getElementById('location-input');
 const suggestionsContainer = document.getElementById('suggestions');
@@ -35,6 +35,10 @@ const getCurrentLocation = () => {
 
             locationNameElement.textContent = 'Current Location';
             resetCurrentLocationButton();
+
+            //Save last location so unit change can refresh weather for the same location
+            localStorage.setItem('lastLatitude', latitude);
+            localStorage.setItem('lastLongitude', longitude);
         },
         (error) => {
             console.error('Error getting geolocation:', error);
@@ -136,6 +140,20 @@ const selectLocation = (location) => {
     // Update location name and country display
     locationNameElement.textContent = `${location.name}, ${location.admin1}`;
     locationCountryElement.textContent = `(${location.country})`;
+
+    //Save last location so unit change can refresh weather for the same location
+    localStorage.setItem('lastLatitude', latitude);
+    localStorage.setItem('lastLongitude', longitude);
 };
 
+// Initialize unit toggles and set up callback to refresh weather on unit change
+initUnitToggle();
+onUnitChange(() => {
+    //Re-fetch current weather with new units when user changes unit preferences
+    const currentLatitude = localStorage.getItem('lastLatitude');
+    const currentLongitude = localStorage.getItem('lastLongitude');
 
+    if (currentLatitude && currentLongitude) {
+        getWeatherData(parseFloat(currentLatitude), parseFloat(currentLongitude));
+    }
+});
