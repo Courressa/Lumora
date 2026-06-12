@@ -5,6 +5,7 @@ let currentUnits = {
 };
 
 let refreshWeatherCallback = null;
+let unitSection, unitArrow;
 let celsiusBtn, fahrenheitBtn, kmhBtn, mphBtn, metricBtn, imperialBtn;
 
 // Load from localStorage
@@ -47,6 +48,8 @@ const refreshWeather = () => {
 
 export const initUnitToggles = () => {
     // Get DOM elements
+    unitSection = document.getElementById('unit-section');
+    unitArrow = document.getElementById('unit-arrow');
     celsiusBtn = document.getElementById('celsius');
     fahrenheitBtn = document.getElementById('fahrenheit');
     kmhBtn = document.getElementById('kmh');
@@ -54,16 +57,21 @@ export const initUnitToggles = () => {
     metricBtn = document.getElementById('metric');
     imperialBtn = document.getElementById('imperial');
 
-    if (!celsiusBtn) return; // Safety check to ensure elements exist before proceeding
+    if (!unitSection) return; // Safety check to ensure elements exist before proceeding
 
     loadSavedUnits();
 
     // Set active states
     updateButtonStates();
 
-    // Temperature event listeners
+    // === Slide Toggle ===
+    unitArrow.addEventListener('click', () => {
+        unitSection.classList.toggle('closed');
+    });
+
+    // === Unit Change Handlers (with no-refresh if already active) ===
     celsiusBtn.addEventListener('click', () => {
-        if (currentUnits.temperature === 'celsius') return; // No change and prevent unnecessary refresh
+        if (currentUnits.temperature === 'celsius') return;
         currentUnits.temperature = 'celsius';
         updateButtonStates();
         saveUnits();
@@ -78,7 +86,6 @@ export const initUnitToggles = () => {
         refreshWeather();
     });
 
-    // Wind speed event listeners
     kmhBtn.addEventListener('click', () => {
         if (currentUnits.windSpeed === 'kmh') return;
         currentUnits.windSpeed = 'kmh';
@@ -95,7 +102,6 @@ export const initUnitToggles = () => {
         refreshWeather();
     });
 
-    // Precipitation event listeners
     metricBtn.addEventListener('click', () => {
         if (currentUnits.precipitation === 'mm') return;
         currentUnits.precipitation = 'mm';
