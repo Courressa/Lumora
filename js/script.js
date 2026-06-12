@@ -108,6 +108,17 @@ export const showSuggestions = (suggestions) => {
     suggestionsContainer.innerHTML = '';
     const checkedLocations = new Set();
 
+    // Sort locations alphabetically by name (then by country if names are the same)
+    suggestions.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        
+        if (nameA === nameB) {
+            return a.country.localeCompare(b.country); // secondary sort by country
+        }
+        return nameA.localeCompare(nameB);
+    });
+
     suggestions.forEach((suggestion) => {
         const location = `${suggestion.name}, ${suggestion.admin1}, ${suggestion.country}`;
         
@@ -145,8 +156,8 @@ const selectLocation = (location) => {
     updateWeatherTabsVisibility();
 
     //Save last location so unit change can refresh weather for the same location
-    localStorage.setItem('lastLatitude', latitude);
-    localStorage.setItem('lastLongitude', longitude);
+    localStorage.setItem('lastLatitude', location.latitude);
+    localStorage.setItem('lastLongitude', location.longitude);
 };
 
 // Initialize unit toggles and set up callback to refresh weather on unit change
