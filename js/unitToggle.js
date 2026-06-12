@@ -45,7 +45,7 @@ const refreshWeather = () => {
     if (refreshWeatherCallback) refreshWeatherCallback();
 };
 
-export const initUnitToggle = () => {
+export const initUnitToggles = () => {
     // Get DOM elements
     celsiusBtn = document.getElementById('celsius');
     fahrenheitBtn = document.getElementById('fahrenheit');
@@ -63,6 +63,7 @@ export const initUnitToggle = () => {
 
     // Temperature event listeners
     celsiusBtn.addEventListener('click', () => {
+        if (currentUnits.temperature === 'celsius') return; // No change and prevent unnecessary refresh
         currentUnits.temperature = 'celsius';
         updateButtonStates();
         saveUnits();
@@ -70,6 +71,7 @@ export const initUnitToggle = () => {
     });
 
     fahrenheitBtn.addEventListener('click', () => {
+        if (currentUnits.temperature === 'fahrenheit') return;
         currentUnits.temperature = 'fahrenheit';
         updateButtonStates();
         saveUnits();
@@ -78,6 +80,7 @@ export const initUnitToggle = () => {
 
     // Wind speed event listeners
     kmhBtn.addEventListener('click', () => {
+        if (currentUnits.windSpeed === 'kmh') return;
         currentUnits.windSpeed = 'kmh';
         updateButtonStates();
         saveUnits();
@@ -85,6 +88,7 @@ export const initUnitToggle = () => {
     });
 
     mphBtn.addEventListener('click', () => {
+        if (currentUnits.windSpeed === 'mph') return;
         currentUnits.windSpeed = 'mph';
         updateButtonStates();
         saveUnits();
@@ -93,6 +97,7 @@ export const initUnitToggle = () => {
 
     // Precipitation event listeners
     metricBtn.addEventListener('click', () => {
+        if (currentUnits.precipitation === 'mm') return;
         currentUnits.precipitation = 'mm';
         updateButtonStates();
         saveUnits();
@@ -100,6 +105,7 @@ export const initUnitToggle = () => {
     });
 
     imperialBtn.addEventListener('click', () => {
+        if (currentUnits.precipitation === 'inch') return;
         currentUnits.precipitation = 'inch';
         updateButtonStates();
         saveUnits();
