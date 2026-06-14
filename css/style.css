@@ -35,6 +35,7 @@ h1 {
 
 h2 {
     color: #886f00;
+    text-align: center;
 }
 
 main {
@@ -50,6 +51,7 @@ button {
     font-size: 1.25rem;
     background: #2f676e;
     color: rgb(255, 255, 255);
+    border: none;
 }
 
 /* === Location Selection === */
@@ -62,8 +64,6 @@ button {
 
 #location-selection button {
     padding: 0.75rem 1.5rem;
-    border: none;
-    
     cursor: pointer;
     border-radius: 0.5rem;
 }
@@ -131,12 +131,12 @@ button {
 
 .tab-button {
     padding: 0.5rem 1.5rem;
-    border: none;
     cursor: pointer;
     border-radius: 0.5rem;
 }
 
-.tab-button.active {
+.tab-button.active, .unit-button.active {
+    cursor: default;
     background: #597173;
     color: rgb(255, 255, 255);
 }
@@ -144,6 +144,69 @@ button {
 .weather-section {
     display: none;
     width: 100%;
+}
+
+/* === Unit Toggles === */
+.unit-section {
+    position: fixed; 
+    right: 0;
+    display: flex;
+    align-items: flex-start;
+    transition: transform 0.4s ease-in-out;
+    z-index: 100;
+}
+
+.unit-section.closed {
+    transform: translateX(80%);   /* Slide off screen */
+}
+
+.unit-display {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 1rem;
+    border-radius: 0 0 0 0.5rem;
+    box-shadow: -4px 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.unit-arrow {
+    border: none;
+    width: 3rem;
+    height: 4rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+    cursor: pointer;
+    box-shadow: -4px 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    transition: transform 0.4s ease;
+}
+
+.unit-section:not(.closed) .unit-arrow i {
+    transform: rotate(180deg);
+}
+
+.unit-button {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.unit-button.left {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.unit-button.right {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.temperature, .wind-speed, .precipitation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* === Weather Display === */
@@ -254,4 +317,98 @@ button {
 
 #hourly > div div, #daily > div div {
     margin: 0.5rem 0;
+}
+
+/* == Responsiveness == */  
+
+@media only screen and (max-width: 770px) {
+    main {
+        padding: 2rem;
+    }
+
+    #weather-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .weather-section.active, #search-form input {
+        min-width: 100%;
+    }
+}
+
+@media only screen and (max-width: 435px) {
+    main {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    button, #weather-info, #current-feels-like {
+        font-size: 1rem;
+    }
+
+    .unit-arrow {
+        font-size: 1.25rem;
+    }
+
+    .unit-section {
+        top: 11.5rem;
+    }
+
+    #search-form input {
+        font-size: 0.875rem;
+    }
+
+    #location-selection {
+        max-width: 100%;
+    }
+
+    #location-selection button {
+        padding: 0.5rem 1rem;
+    }
+
+    .location-buttons {
+        gap: 0.5rem;
+    }
+
+    .weather-section.active {
+        padding: 1rem;
+    }
+
+    .centered, #current-weather-details {
+        font-size: 1.15rem;
+    }
+
+    .centered {
+        padding: 0rem;
+        margin: 0rem;
+    }
+
+    #current-weather-emoji {
+        font-size: 2.25rem;
+    }
+
+    #current-temperature {
+        font-size: 1.5rem;
+    }
+
+    #current-weather-description {
+        font-size: 1.25rem;
+        font-style: italic;
+        padding-bottom: 1rem;
+    }
+
+    #current-weather-details {
+        padding: 1.3rem 0;
+    }
+
+    #hourly > div, #daily > div {
+        min-width: 12rem;
+    }
 }

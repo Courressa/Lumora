@@ -1,5 +1,5 @@
-import { getWeatherData } from './api.js';
-import { getLocationSuggestions } from './api.js';
+import { getWeatherData, getLocationSuggestions } from './api.js';
+import { initUnitToggles, onUnitChange } from './unitToggle.js';
 
 const locationInput = document.getElementById('location-input');
 const suggestionsContainer = document.getElementById('suggestions');
@@ -34,7 +34,12 @@ const getCurrentLocation = () => {
             await getWeatherData(latitude, longitude);
 
             locationNameElement.textContent = 'Current Location';
+            updateWeatherTabsVisibility();
             resetCurrentLocationButton();
+
+            //Save last location so unit change can refresh weather for the same location
+            localStorage.setItem('lastLatitude', latitude);
+            localStorage.setItem('lastLongitude', longitude);
         },
         (error) => {
             console.error('Error getting geolocation:', error);
@@ -90,18 +95,29 @@ document.addEventListener('click', (event) => {
     }
 });
 
-// Hide Current, Hourly and Daily if location (current or selected) has not been selected
-const hideWeatherTabs = () => {
-    weatherTabsContainer.style.display = 'none';
+// Hide/Show Current, Hourly and Daily if location (current or selected) has not been selected
+export const updateWeatherTabsVisibility = () => {
+    const hasLocation = locationNameElement.textContent.trim() !== '';
+    weatherTabsContainer.style.display = hasLocation ? 'flex' : 'none';
+    console.log('Updating weather tabs visibility. Has location:', hasLocation);
 };
 
-if (!locationNameElement.textContent) {
-    hideWeatherTabs();
-};
+updateWeatherTabsVisibility();
 
 export const showSuggestions = (suggestions) => {
     suggestionsContainer.innerHTML = '';
     const checkedLocations = new Set();
+
+    // Sort locations alphabetically by name (then by country if names are the same)
+    suggestions.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        
+        if (nameA === nameB) {
+            return a.country.localeCompare(b.country); // secondary sort by country
+        }
+        return nameA.localeCompare(nameB);
+    });
 
     suggestions.forEach((suggestion) => {
         const location = `${suggestion.name}, ${suggestion.admin1}, ${suggestion.country}`;
@@ -136,6 +152,22 @@ const selectLocation = (location) => {
     // Update location name and country display
     locationNameElement.textContent = `${location.name}, ${location.admin1}`;
     locationCountryElement.textContent = `(${location.country})`;
+
+    updateWeatherTabsVisibility();
+
+    //Save last location so unit change can refresh weather for the same location
+    localStorage.setItem('lastLatitude', location.latitude);
+    localStorage.setItem('lastLongitude', location.longitude);
 };
 
+// Initialize unit toggles and set up callback to refresh weather on unit change
+initUnitToggles();
+onUnitChange(() => {
+    //Re-fetch current weather with new units when user changes unit preferences
+    const currentLatitude = localStorage.getItem('lastLatitude');
+    const currentLongitude = localStorage.getItem('lastLongitude');
 
+    if (currentLatitude && currentLongitude) {
+        getWeatherData(parseFloat(currentLatitude), parseFloat(currentLongitude));
+    }
+});

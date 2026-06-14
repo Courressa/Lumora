@@ -1,4 +1,5 @@
 import { weatherCodeToEmoji, weatherCodeToDescription } from './weatherObjects.js';
+import { updateWeatherTabsVisibility } from './script.js';
 
 const currentWeatherElement = document.getElementById('current');
 const hourlyWeatherElement = document.getElementById('hourly');
@@ -36,11 +37,6 @@ tabButtons.forEach(button => {
         }
     });
 });
-
-const showWeatherTabs = () => {
-    weatherTabsContainer.style.display = 'flex';
-};
-
 
 const currentWeather = (weather, units) => {
     currentWeatherElement.querySelector('#current-weather-emoji').textContent = weatherCodeToEmoji[weather.weather_code] || '❓';
@@ -148,5 +144,5 @@ export const displayWeather = (current, currentUnits, daily, dailyUnits, hourly,
     currentWeather(current, currentUnits);
     hourlyWeather(hourly, hourlyUnits);
     dailyWeather(daily, dailyUnits);
-    showWeatherTabs();
+    updateWeatherTabsVisibility();
 };
