@@ -1,41 +1,51 @@
-# Lumora
+# <p align="center">🌦️Lumora🌦️</p>
 
-**Your Horizon, Every Day**
+<p align="center"><strong>Your Horizon, Every Day</strong></p> 
 
-A clean and modern weather dashboard built with HTML, CSS, and JavaScript.
+<p align="center">A clean, modern, and responsive weather dashboard built with vanilla HTML, CSS, and JavaScript.</p>
 
-## Features
+![Lumora Preview](https://github.com/user-attachments/assets/cb279928-a86a-4931-8fc1-b99663a8d380)
 
-### Core Features (MVP)
-- Automatic current location detection (with permission)
-- Search any city, state, or location
-- Current weather conditions (temperature, feels-like, humidity, wind, etc.)
-- 7-day daily forecast
-- Hourly forecast (next 24-48 hours)
-- Responsive design (mobile + desktop friendly)
-- Dark / Light mode support
+## ✨Features✨
 
-### Nice-to-Have Features (Future)
+### Core Features
+
+- **Current Location Detection** (with permission prompt)
+- **Search any city or location** with autocomplete suggestions (sorted alphabetically)
+- **Current weather** — temperature, feels-like, humidity, wind (speed + direction), cloud cover, weather description + emoji
+- **Hourly forecast**
+- **7-day daily forecast**
+- **Unit toggles** (with saved preferences):
+  - Temperature: °C ↔ °F
+  - Wind speed: km/h ↔ mph
+  - Precipitation: mm ↔ inches
+- **Sliding unit panel** from the right side
+- Fully **responsive** design (mobile-first)
+
+### Future / Planned Features
+
+- Dark / Light mode toggle
 - Save favorite locations
-- Temperature unit toggle (°C / °F)
-- Dynamic background based on weather/time
 - Recent searches
-- Better error handling and loading states
+- Improved loading states and error handling
 
-## Tech Stack
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Weather Data**: Open-Meteo API (free)
+## 🛠️Tech Stack🛠️
+
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript (ES6 modules)
+- **Weather API**: [Open-Meteo](https://open-meteo.com/) (free, no API key required)
 - **Geocoding**: Open-Meteo Geocoding API
 
-## How to Run
+## 💻How to Run💻
 
 1. Clone or download the project
 2. Open `index.html` in your browser
-3. Allow location access when prompted
+3. Allow location access when prompted, or use the search function.
 
-## Project Goals
-- Keep it lightweight and fast
-- Beautiful, minimal UI
+No build tools or dependencies needed — it works straight from the browser.
+
+## ✅Project Goals✅
+- Lightweight and fast
+- Clean, minimal, and beautiful UI
 - Fully functional without needing an account or API key
 
 ## License
