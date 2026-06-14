@@ -35,6 +35,7 @@ h1 {
 
 h2 {
     color: #886f00;
+    text-align: center;
 }
 
 main {
@@ -316,4 +317,98 @@ button {
 
 #hourly > div div, #daily > div div {
     margin: 0.5rem 0;
+}
+
+/* == Responsiveness == */  
+
+@media only screen and (max-width: 770px) {
+    main {
+        padding: 2rem;
+    }
+
+    #weather-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .weather-section.active, #search-form input {
+        min-width: 100%;
+    }
+}
+
+@media only screen and (max-width: 435px) {
+    main {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    button, #weather-info, #current-feels-like {
+        font-size: 1rem;
+    }
+
+    .unit-arrow {
+        font-size: 1.25rem;
+    }
+
+    .unit-section {
+        top: 11.5rem;
+    }
+
+    #search-form input {
+        font-size: 0.875rem;
+    }
+
+    #location-selection {
+        max-width: 100%;
+    }
+
+    #location-selection button {
+        padding: 0.5rem 1rem;
+    }
+
+    .location-buttons {
+        gap: 0.5rem;
+    }
+
+    .weather-section.active {
+        padding: 1rem;
+    }
+
+    .centered, #current-weather-details {
+        font-size: 1.15rem;
+    }
+
+    .centered {
+        padding: 0rem;
+        margin: 0rem;
+    }
+
+    #current-weather-emoji {
+        font-size: 2.25rem;
+    }
+
+    #current-temperature {
+        font-size: 1.5rem;
+    }
+
+    #current-weather-description {
+        font-size: 1.25rem;
+        font-style: italic;
+        padding-bottom: 1rem;
+    }
+
+    #current-weather-details {
+        padding: 1.3rem 0;
+    }
+
+    #hourly > div, #daily > div {
+        min-width: 12rem;
+    }
 }
