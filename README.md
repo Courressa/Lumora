@@ -1,8 +1,14 @@
 # <p align="center">🌦️Lumora🌦️</p>
 
-<p align="center"><strong>Your Horizon, Every Day</strong></p> 
+<p align="center">
+  <strong>Your Horizon, Every Day</strong>
+</p> 
 
 <p align="center">A clean, modern, and responsive weather dashboard built with vanilla HTML, CSS, and JavaScript.</p>
+
+<p align="center">
+  <strong>🌐 Try It Here: <a href="https://courressa.com/Lumora" target="_blank">Lumora</a></strong>
+</p>
 
 ![Lumora Preview](https://github.com/user-attachments/assets/cb279928-a86a-4931-8fc1-b99663a8d380)
 
