@@ -57,10 +57,13 @@ export const getWeatherData = async (latitude, longitude) => {
                 jsonResponse.hourly,
                 jsonResponse.hourly_units
             );
+        } else {
+            throw new Error(`API error: ${response.status}`);
         }
 
     } catch (error) {
         console.error('Error fetching weather data:', error);
-        alert('An error occurred while fetching weather data. Please try again later.');
+        alert(`Failed to fetch weather: ${error.message || 'Check your connection and try again.'}`);
+        throw error;
     }
 };
