@@ -23,23 +23,30 @@ const getCurrentLocation = () => {
     resetSearchInputVisibility();
 
     if (!navigator.geolocation) {
-        alert('Geolocation is not supported by your browser. Please use the search function to find your location.');
-        resetCurrentLocationButton();
+        alert('Geolocation is not supported by your browser. Please use the search function to find your location. Loading default location (New York).');
+        loadDefaultLocation();
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
         async (position) => {
-            const { latitude, longitude } = position.coords;
-            await getWeatherData(latitude, longitude);
+            try {
+                const { latitude, longitude } = position.coords;
+                await getWeatherData(latitude, longitude);
 
-            locationNameElement.textContent = 'Current Location';
-            updateWeatherTabsVisibility();
-            resetCurrentLocationButton();
+                locationNameElement.textContent = 'Current Location';
+                updateWeatherTabsVisibility();
 
-            //Save last location so unit change can refresh weather for the same location
-            localStorage.setItem('lastLatitude', latitude);
-            localStorage.setItem('lastLongitude', longitude);
+                //Save last location so unit change can refresh weather for the same location
+                localStorage.setItem('lastLatitude', latitude);
+                localStorage.setItem('lastLongitude', longitude);
+            } catch (error) {
+                console.error('Error in current location weather fetch/display:', err);
+                alert('Failed to load weather for your location. Please try Search instead.');
+                loadDefaultLocation();
+            } finally {
+                resetCurrentLocationButton();
+            }
         },
         (error) => {
             console.error('Error getting geolocation:', error);
@@ -48,20 +55,43 @@ const getCurrentLocation = () => {
             
             switch(error.code) {
                 case error.PERMISSION_DENIED:
-                    message = "Location access denied. Please allow location permission.";
+                    message = "Location access was denied. Please use the search function to find your location. Loading New York as default.";
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    message = "Location information unavailable.";
+                    message = "Location information unavailable. Loading New York as default.";
                     break;
                 case error.TIMEOUT:
-                    message = "Location request timed out.";
+                    message = "Location request timed out. Loading New York as default.";
                     break;
             }
             
             alert(message);
+            loadDefaultLocation();
             resetCurrentLocationButton();
         }
     );
+};
+
+// Helper function for default fallback
+const loadDefaultLocation = async () => {
+    // New York coordinates
+    const defaultLat = 40.7128;
+    const defaultLon = -74.0060;
+    
+    try {
+        await getWeatherData(defaultLat, defaultLon);
+        
+        locationNameElement.textContent = 'New York';
+        locationCountryElement.textContent = '(USA)';
+        updateWeatherTabsVisibility();
+
+        // Save for unit changes
+        localStorage.setItem('lastLatitude', defaultLat);
+        localStorage.setItem('lastLongitude', defaultLon);
+    } catch (err) {
+        console.error('Failed to load default New York weather:', err);
+        alert('Failed to load default weather. Please try searching manually.');
+    }
 };
 
 // Reset current location button to default state
